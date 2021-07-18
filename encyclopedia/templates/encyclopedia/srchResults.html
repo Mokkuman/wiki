@@ -1,0 +1,14 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search Results
+{% endblock title %}
+{% block body %}
+     <h1>You searched for {{searched}}</h1> 
+     <br/>
+     <!--Lista de coincidencias Centrar esto-->
+     {% for entry in coincidencias %}
+         <a href="/wiki/{{entry}}"><li>{{ entry }} </li></a>
+     {% endfor %}
+
+{% endblock body %}
