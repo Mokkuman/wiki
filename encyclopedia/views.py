@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django import forms #para validar el formulario
 
+from .forms import newPageForm
 import markdown
 from . import util
 
@@ -40,17 +41,40 @@ def search(request):
                 })
 
 def newPage(request):
-    if request.method == 'POST':
-        titulo  = request.GET['titulo']
-        for entry in util.list_entries():
-            if titulo.lower() in entry.lower():
-                existencia=True;
+    form = newPageForm(request.POST or None)
+    if form.is_valid():
         
-        return render(request,"encyclopedia/newPage.html",{
-        "exist":existencia
-        })    
-    else:
-        return render(request,"encyclopedia/newPage.html")
+        form.save()  
+    return render(request,"encyclopedia/newPage.html",{
+        'form':form
+    })
+    # if request.method == 'POST':
+    #     form = newPageForm(request.POST)
+    #     if form.is_valid():
+    #         # process the data in form.cleaned_data as required
+    #         title = form.cleaned_data['title']
+    #         # redirect to a new URL:
+    #         if(util.get_entry(title)) is None:
+    #             util.save_entry(title)
+    #         return redirect('entry',title='title')
+
+    # # if a GET (or any other method) we'll create a blank form
+    # else:
+    #     form = newPage(request)
+
+    # return render(request, 'encyclopedia/newPage    .html', {'form': form})
+
+    # if request.method == 'POST':
+    #     titulo  = request.GET['titulo']
+    #     for entry in util.list_entries():
+    #         if titulo.lower() in entry.lower():
+    #             existencia=True;
+        
+    #     return render(request,"encyclopedia/newPage.html",{
+    #     "exist":existencia
+    #     })    
+    # else:
+    #     return render(request,"encyclopedia/newPage.html")
 
 def randomPage(request):
     return render(request,"encyclopedia/rdmPage.html")
