@@ -6,30 +6,19 @@
 
 {% block body %} 
     <h1> New Content</h1>
+    {% if exist %}
+        <div id="existe">
+            <h1> The entry alredy exists</h1>
+            <p> If it is a new content you could change the title </p>
+        </div>
+    
+    {% else %}
     <form method ="POST"  action= "{%url 'newPage'%}"  > 
         {% csrf_token %} 
         {{ form.as_p }}
         <input type="submit" value="submit">
     </form>
-    <!--
-    <form method ="POST">
-        <div id="titleNew">
-            <label for="titulo"> Title: </label>
-            <textarea name="titulo" style="width:500px; height:24px;"> 
-            </textarea> 
-        </div>
-        <div id="content">
-            <label for="contenido"> Content</label>
-            <textarea name="contenido" style="width:500px; height:24px;"> </textarea>
-        </div>
-        <div id="submitbtn">
-            <input type="submit" value="submit">
-        </div>
-    </form>
-    {% if exist %}
-        <div id="existe">
-            <h1> Ya existe </h1>
-        </div>
-    {% endif %}-->
+    {% endif %}
+    
 
 {% endblock body %}
