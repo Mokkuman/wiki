@@ -8,7 +8,7 @@ If you want to execute the project you need to:
   * Initialize the virtual enviroment (venv), to do this you have to type on the terminal **wiki\Scripts\activate.bat** (this works on VSCode).
   * Write **python manage.py runserver** .
 
-##Structure
+## Structure
 * **encyclopedia** is my app for the **wiki** project.
 * I use a django form for the page, you can see the class newPage Form on **encyclopedia/forms.py**.
 * Respect the **view.py** I wrote on this file the functions for the correct behavior of the page.
