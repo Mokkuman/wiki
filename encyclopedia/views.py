@@ -61,19 +61,22 @@ def newPage(request):
     })
     
 def edit(request,title_edit):
-    # entryContent = util.get_entry(title_edit)
-    # form = newPageForm(request.POST or None)
-    # if entryContent is not None:
+    entryContent = util.get_entry(title_edit)
+    form = newPageForm(request.POST or None)
+    if entryContent is not None: #existe el entry ergo editable
         
-        
-    #     form.fields['titulo'].initial = title_edit
-    #     form.fields['titulo'].widget = forms.HiddenInput()
-    #     forms.fields['contenido'].initial = entryContent
-    #     return render(request, "encyclopedia/newEntry.html",{
-    #         'form':form
-    #     })
-        
-    return render(request,"encyclopedia/edit.html")
+        form.fields['titulo'].initial = title_edit
+        form.fields['titulo'].widget = forms.HiddenInput()
+        form.fields['contenido'].initial = entryContent
+        #return redirect('entry',title=title_edit)
+        return render(request, "encyclopedia/edit.html",{
+            'form':form,
+            'title':title_edit
+        })
+    else:
+        return render(request,"encyclopedia/notFound.html")
+    
+    
 def randomPage(request):
     entry = secrets.choice(util.list_entries())
     return redirect('entry', title=entry)
