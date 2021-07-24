@@ -19,5 +19,4 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("encyclopedia.urls")),
-    #path('wiki/<str:tittle>',include("encyclopedia.urls")),
 ]

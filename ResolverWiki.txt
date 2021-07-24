@@ -1,0 +1,58 @@
+#USANDO UN FORMULARIO ALOJADO EN 'FORMS.PY'
+
+def edit(request,title_edit):
+	entryContent = util.get_entry(title_edit)
+    	form = newPageForm(request.POST or None)
+	#Editando lo que mostrará el form
+    	if entryContent is not None:
+        	form.fields['titulo'].initial = title_edit
+        	form.fields['titulo'].widget = forms.HiddenInput()
+        	form.fields['contenido'].initial = entryContent
+        
+        	if form.is_valid():
+            		contenido = form.cleaned_data['contenido']
+            		util.save_entry(title_edit,contenido)
+			return redirect('entry',title=title_edit)
+            
+    return render(request,"encyclopedia/edit.html",{
+        'title':title_edit,
+        'form':form
+    })
+#como luce el body de edit.html
+    <h1>Edit {{title}}</h1>
+    <hr/>
+     
+    <form action="{%url 'edit' title%}" method="POST">
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <input type="submit" value="submit">
+    </form>
+
+
+
+
+VERSION FORM CON HTML
+VIEWS.PY
+def edit(request,title_edit):
+	init_content= (util.get_entry(title_edit))
+	if request.method == "POST":
+        	contenido = request.POST["contenido"]
+        	util.save_entry(title_edit,contenido)
+        	return redirect('entry',title_edit)
+        
+    	return render(request, "encyclopedia/edit.html",{
+        	"title":title_edit,
+        	"ini_content":init_content
+        })
+
+HTML
+   <form action="{%url 'edit' title%}"   method="POST">
+        {% csrf_token %}
+
+        <label for="contenido">Contenido: </label>
+        <textarea id="contenido" name="contenido" rows="4" cols="25">
+            {{ini_content | safe}}
+        </textarea>
+        <input type="submit" value="submit">
+    </form>

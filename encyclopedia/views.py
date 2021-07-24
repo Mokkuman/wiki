@@ -11,7 +11,7 @@ def index(request):
     })
 
 def entry(request,title): #Pa wachar la entry accedida desde url
-    entryContent = util.get_entry(title) #Obtengo valor del entry
+    entryContent = util.get_entry(title)
     if entryContent is not None: #hay contenido
         return render(request, "encyclopedia/entryCont.html",{
             "entryTtle":title,
@@ -63,18 +63,24 @@ def newPage(request):
 def edit(request,title_edit):
     entryContent = util.get_entry(title_edit)
     form = newPageForm(request.POST or None)
-    if entryContent is not None: #existe el entry ergo editable
-        
+#Editando lo que mostrará el form
+    if entryContent is not None:
         form.fields['titulo'].initial = title_edit
         form.fields['titulo'].widget = forms.HiddenInput()
         form.fields['contenido'].initial = entryContent
-        #return redirect('entry',title=title_edit)
-        return render(request, "encyclopedia/edit.html",{
-            'form':form,
-            'title':title_edit
-        })
-    else:
-        return render(request,"encyclopedia/notFound.html")
+        
+        if form.is_valid():
+            contenido = form.cleaned_data['contenido']
+            util.save_entry(title_edit,contenido)
+            
+            return redirect('entry',title=title_edit)
+        
+    return render(request,"encyclopedia/edit.html",{
+        'title':title_edit,
+        'form':form
+    })
+
+    return render(request,"encyclopedia/edit.html")
     
     
 def randomPage(request):
